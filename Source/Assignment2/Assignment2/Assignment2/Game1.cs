@@ -39,6 +39,8 @@ namespace Assignment2
         Ball ball;
         HUD hud;
 
+        private AudioUtils audioUtils;
+
         private int combo = 1;
 
         private Color bgColor = Color.CornflowerBlue;
@@ -51,6 +53,7 @@ namespace Assignment2
         public Game1()
         {
             instance = this;
+            audioUtils = AudioUtils.getInstance();
 
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -102,6 +105,9 @@ namespace Assignment2
 
             // Create the HUD
             hud = new HUD(Content);
+
+            // Load the audio
+            audioUtils.loadContent(Content);
         }
 
         /// <summary>
@@ -137,8 +143,11 @@ namespace Assignment2
             console.update();
             hud.update(gamepad, keyboard, mouse);
 
-            paddle.update(gamepad, keyboard, mouse);
-            ball.update(gamepad, keyboard, mouse);
+            if (!hud.getPausedState())
+            {
+                paddle.update(gamepad, keyboard, mouse);
+                ball.update(gamepad, keyboard, mouse);
+            }
 
             base.Update(gameTime);
         }
@@ -227,6 +236,8 @@ namespace Assignment2
         {
             ball.stop();
 
+            MediaPlayer.Stop();
+
             hud.gameWin();
         }
 
@@ -235,6 +246,8 @@ namespace Assignment2
         /// </summary>
         public void gameOver()
         {
+            ball.stop();
+
             hud.gameOver();
         }
 

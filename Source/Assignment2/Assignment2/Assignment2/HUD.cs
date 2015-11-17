@@ -23,9 +23,13 @@ namespace Assignment2.Entities
         private SpriteFont smallFont;
         private SpriteFont endFont;
 
+        private GamePadState prevGamepad;
+        private KeyboardState prevKeyboard;
+
         private int score = 0;
         private bool end = false;
         private bool win = false;
+        private bool pause = false;
 
         /// <summary>
         /// This is the constructor for the HUD.
@@ -46,7 +50,33 @@ namespace Assignment2.Entities
         /// <param name="mouseState">The state of the mouse</param>
         public override void update(GamePadState gamepadState, KeyboardState keyboardState, MouseState mouseState)
         {
-            
+            if (gamepadState.IsButtonDown(Buttons.Start) || keyboardState.IsKeyDown(Keys.P))
+            {
+                if (!prevGamepad.IsButtonDown(Buttons.Start) && !prevKeyboard.IsKeyDown(Keys.P))
+                {
+                    pause = !pause;
+
+                    if (pause)
+                    {
+                        // If the song is playing, pause it
+                        if (MediaPlayer.State == MediaState.Playing)
+                        {
+                            MediaPlayer.Pause();
+                        }
+                    }
+                    else
+                    {
+                        if (MediaPlayer.State == MediaState.Paused)
+                        {
+                            MediaPlayer.Resume();
+                        }
+                    }
+                }
+            }
+
+            // Set the previous keyboard and gamepad state
+            prevGamepad = gamepadState;
+            prevKeyboard = keyboardState;
         }
 
         /// <summary>
@@ -72,6 +102,12 @@ namespace Assignment2.Entities
                     Color.White, 0, new Vector2(endFont.MeasureString("YOU WIN").X / 2, endFont.MeasureString("YOU WIN").Y / 2), 1, 0, 0);
                 sb.DrawString(endFont, "" + score, new Vector2(Game1.instance.GraphicsDevice.Viewport.Bounds.Width / 2, Game1.instance.GraphicsDevice.Viewport.Bounds.Height / 2 + COMBO_OFFSET * 2),
                     Color.White, 0, new Vector2(endFont.MeasureString("" + score).X / 2, endFont.MeasureString("" + score).Y / 2), 1, 0, 0);
+            }
+
+            if (pause)
+            {
+                sb.DrawString(endFont, "PAUSED", new Vector2(Game1.instance.GraphicsDevice.Viewport.Bounds.Width / 2, Game1.instance.GraphicsDevice.Viewport.Bounds.Height / 2),
+                    Color.White, 0, new Vector2(endFont.MeasureString("PAUSED").X / 2, endFont.MeasureString("PAUSED").Y / 2), 1, 0, 0);
             }
 
             sb.End();
@@ -111,6 +147,11 @@ namespace Assignment2.Entities
             win = false;
 
             score = 0;
+        }
+
+        public bool getPausedState()
+        {
+            return pause;
         }
     }
 }
