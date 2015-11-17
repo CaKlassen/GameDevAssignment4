@@ -56,6 +56,9 @@ namespace Assignment2.Entities
             {
                 start = true;
 
+                // Start the music
+                MediaPlayer.Play(AudioUtils.getInstance().mscGame);
+
                 // Set the randomized start speed
                 Random r = new Random();
 
@@ -84,6 +87,9 @@ namespace Assignment2.Entities
             if (pos.Y > Game1.instance.GraphicsDevice.Viewport.Bounds.Height)
             {
                 Game1.instance.gameOver();
+
+                // Stop the music
+                MediaPlayer.Stop();
             }
 
             // Movement
@@ -147,6 +153,8 @@ namespace Assignment2.Entities
         /// <param name="horizontal">Whether or not to bounce horizontally</param>
         public void bounce(bool horizontal)
         {
+            AudioUtils.getInstance().sndBounce.Play();
+
             if (horizontal)
             {
                 spd.X = -spd.X;
