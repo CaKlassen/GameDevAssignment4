@@ -62,6 +62,7 @@ namespace Assignment3
 
             generateStartAndExit();
 
+
             //printDebugMaze();
 
             return rawMaze;
@@ -144,6 +145,21 @@ namespace Assignment3
             
         }
 
+        private void generateEnemy(ContentManager Content, List<Entity> collideList)
+        {
+            int randStartX, randStartY;
+
+            do
+            {
+                randStartX = random.Next(size);
+                randStartY = random.Next(size);
+            }
+            while (rawMaze[randStartY, randStartX] == true);
+
+            Enemy enemy = new Enemy(Content, new Vector3(randStartY, 0, randStartX), rawMaze);
+            collideList.Add(enemy);
+        }
+
         public void generateWalls(ContentManager content, List<Entity> collideList)
         {
             // Generate the walls
@@ -160,6 +176,8 @@ namespace Assignment3
 
             // Generate the exit
             collideList.Add(new Exit(content, new Vector3(exitPos.X, 0, exitPos.Y)));
+
+            generateEnemy(content, collideList);
         }
 
 

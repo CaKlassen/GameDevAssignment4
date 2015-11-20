@@ -73,6 +73,27 @@ namespace Assignment3.Utilities
                         }
 
                     }
+                    else if (e.GetType() == typeof(Enemy))
+                    {
+                        Enemy w = (Enemy)e;//put it into a wall variable
+                        for (int i = 0; i < player.playerModel.Meshes.Count; i++)
+                        {
+                            BoundingSphere PlayerSphere = player.playerModel.Meshes[i].BoundingSphere;
+                            PlayerSphere.Center += player.getPosition();
+
+                            for (int j = 0; j < w.model.Meshes.Count; j++)
+                            {
+                                BoundingSphere WallSphere = w.model.Meshes[j].BoundingSphere;
+                                WallSphere.Center += w.getPosition();
+
+                                if (PlayerSphere.Intersects(WallSphere))
+                                {
+                                    //collision!
+                                    BaseGame.instance.changeScene(SceneType.MENU);
+                                }
+                            }
+                        }
+                    }
                 }
             }
             return false;

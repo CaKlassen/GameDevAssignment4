@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="Entities\Enemy.cs" />
     <Compile Include="Entities\Floor.cs" />
     <Compile Include="Entities\Exit.cs" />
     <Compile Include="Entities\Player.cs" />
