@@ -60,19 +60,26 @@ namespace Assignment3.Scenes
         private float flashlight = dayFlashlight;
         private float ambientIntensity = dayIntensity;
         private bool day = true;
+        private bool dayAudio = true;
+        private bool VolSaved = false;
+        bool fadeOut = true;
+        bool fadeIn = false;
 
         MazeDifficulty difficulty;
         private float[] fogLevels = { 30, 20, 10 };
 
+        public AudioUtils audioUtils;
 
         public MazeScene()
         {
             instance = this;
+            audioUtils = AudioUtils.getInstance();
         }
 
         public override void onLoad(ContentManager content)
         {
             HLSLeffect = content.Load<Effect>("Effects/Shader");
+            audioUtils.loadContent(content);
 
             difficulty = MazeCommunication.getDifficulty();
 
@@ -242,6 +249,45 @@ namespace Assignment3.Scenes
                 fogColour.X += PhysicsUtil.smoothChange(fogColour.X, dayFogColour.X, AMBIENT_RATE);
                 fogColour.Y += PhysicsUtil.smoothChange(fogColour.Y, dayFogColour.Y, AMBIENT_RATE);
                 fogColour.Z += PhysicsUtil.smoothChange(fogColour.Z, dayFogColour.Z, AMBIENT_RATE);
+
+                if(dayAudio)
+                {
+                    if (!VolSaved)
+                    {
+                        audioUtils.curVol = MediaPlayer.Volume;
+                        VolSaved = true;
+                    }
+
+                    if (fadeOut)
+                    {
+                        fadeOut = !audioUtils.fadeTrackOut();
+
+                        if(!fadeOut)
+                        {
+                            MediaPlayer.IsMuted = true;
+                            MediaPlayer.Stop();
+                            fadeIn = true;
+                        }
+                             
+                        float vol = MediaPlayer.Volume;
+                    }
+
+                    if (fadeIn)
+                    {
+                        MediaPlayer.Play(audioUtils.day);
+                        MediaPlayer.IsMuted = false;
+                        fadeIn = !audioUtils.fadeTrackIn();
+                        dayAudio = true;
+                        
+
+                        if(!fadeIn)
+                        {
+                            fadeOut = true;
+                            VolSaved = false;
+                            dayAudio = false;
+                        }
+                    }
+                }
             }
             else
             {
@@ -255,7 +301,48 @@ namespace Assignment3.Scenes
                 fogColour.X += PhysicsUtil.smoothChange(fogColour.X, nightFogColour.X, AMBIENT_RATE);
                 fogColour.Y += PhysicsUtil.smoothChange(fogColour.Y, nightFogColour.Y, AMBIENT_RATE);
                 fogColour.Z += PhysicsUtil.smoothChange(fogColour.Z, nightFogColour.Z, AMBIENT_RATE);
+
+                if(!dayAudio)
+                {
+                    if (!VolSaved)
+                    {
+                        audioUtils.curVol = MediaPlayer.Volume;
+                        VolSaved = true;
+                    }
+
+                    if (fadeOut)
+                    {
+                        fadeOut = !audioUtils.fadeTrackOut();
+
+                        if (!fadeOut)
+                        {
+                            MediaPlayer.IsMuted = true;
+                            MediaPlayer.Stop();
+                            fadeIn = true;
+                        }
+
+                        float vol = MediaPlayer.Volume;
+                    }
+
+                    if (fadeIn)
+                    {
+                        MediaPlayer.Play(audioUtils.night);
+                        MediaPlayer.IsMuted = false;
+                        fadeIn = !audioUtils.fadeTrackIn();
+                        float vol = MediaPlayer.Volume;
+                        dayAudio = false;
+                       
+
+                        if (!fadeIn)
+                        {
+                            fadeOut = true;
+                            VolSaved = false;
+                            dayAudio = true;
+                        }
+                    }
+                }
             }
+
 
             mazeRunner.update(gameTime, gamepad, keyboard);
             camera.Update(gameTime);
