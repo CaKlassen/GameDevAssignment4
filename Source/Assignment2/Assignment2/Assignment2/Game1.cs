@@ -63,6 +63,8 @@ namespace Assignment2
             // Set default window properties
             graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;
+
+            save = SaveUtils.getInstance();
         }
 
         /// <summary>
@@ -110,8 +112,7 @@ namespace Assignment2
 
             // Load the audio
             audioUtils.loadContent(Content);
-
-            save = SaveUtils.getInstance();
+                       
 
             // Initialize the high score list
 #if XBOX360
