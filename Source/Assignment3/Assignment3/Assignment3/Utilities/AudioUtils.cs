@@ -60,7 +60,7 @@ namespace Assignment3.Utilities
             bool fadeComplete = false;
             MediaPlayer.Volume += PhysicsUtil.smoothChange(MediaPlayer.Volume, 0, 40);
             float volume = MediaPlayer.Volume;
-            if (MediaPlayer.Volume < 0.1)
+            if (MediaPlayer.Volume < 0.2)
             {
                 MediaPlayer.Volume = 0.0f;
                 fadeComplete = true;

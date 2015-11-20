@@ -68,6 +68,7 @@ namespace Assignment3.Scenes
         bool fadeIn = false;
         const float TIMER = 0.5f;
         float timer = TIMER;
+        public static float MIN_DIS = 5f;  
 
         MazeDifficulty difficulty;
         private float[] fogLevels = { 30, 20, 10 };
@@ -122,10 +123,6 @@ namespace Assignment3.Scenes
                 prevGP = GamePad.GetState(PlayerIndex.One);
         }
 
-        public float getFogVol()
-        {
-            return audioUtils.curVol / 2;
-        }
 
         public override void update(GameTime gameTime, GamePadState gamepad, KeyboardState keyboard)
         {
@@ -273,6 +270,9 @@ namespace Assignment3.Scenes
                 }
             }
 
+            //distance Volume
+            DoDistanceVolume();
+
             // Update the ambience
             if (day)
             {
@@ -390,6 +390,7 @@ namespace Assignment3.Scenes
                 audioUtils.playFootstep();
                 timer = TIMER;
             }
+
             
 
             mazeRunner.update(gameTime, gamepad, keyboard);
@@ -403,6 +404,23 @@ namespace Assignment3.Scenes
 
             prevKB = keyboard;
             prevGP = gamepad;
+        }
+
+        /// <summary>
+        /// calculates volume based of distance
+        /// </summary>
+        public void DoDistanceVolume()
+        {
+            Enemy enemy = (Enemy)collideList.Last();
+            float distance = Vector3.Distance(camera.Position, enemy.getPosition());
+            float newVolume;
+            if (fogEnabled)
+                newVolume = (MIN_DIS / distance) * 0.5f;
+            else
+                newVolume = (MIN_DIS / distance) * 1.0f;
+
+            audioUtils.curVol = newVolume;
+            MediaPlayer.Volume = newVolume;
         }
 
         public override void draw(SpriteBatch sb)
