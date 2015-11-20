@@ -49,6 +49,7 @@ namespace Assignment3.Utilities
             night = c.Load<Song>("Sound/Cold Sweat");
             MediaPlayer.Volume = 1.0f;
             curVol = MediaPlayer.Volume;
+            MediaPlayer.IsRepeating = true;
         }
 
         /// <summary>

@@ -68,7 +68,8 @@ namespace Assignment3.Scenes
         bool fadeIn = false;
         const float TIMER = 0.5f;
         float timer = TIMER;
-        public static float MIN_DIS = 5f;  
+        public static float MIN_DIS = 5f;
+        bool playMusic = true; 
 
         MazeDifficulty difficulty;
         private float[] fogLevels = { 30, 20, 10 };
@@ -201,6 +202,22 @@ namespace Assignment3.Scenes
                         MediaPlayer.Volume = audioUtils.curVol;
                     }
                 }
+
+                //toggle music
+                if(keyboard.IsKeyDown(Keys.Q) && !prevKB.IsKeyDown(Keys.Q))
+                {
+                    if (playMusic)
+                    {
+                        MediaPlayer.Pause();
+                        playMusic = false;
+                    }
+                    else
+                    {
+                        MediaPlayer.Resume();
+                        playMusic = true;
+                    }
+                      
+                }
             }
             else
             {
@@ -268,6 +285,21 @@ namespace Assignment3.Scenes
                     }
                        
                 }
+
+                //toggle music
+                if(gamepad.IsButtonDown(Buttons.X) && !prevGP.IsButtonDown(Buttons.X))
+                {
+                    if (playMusic)
+                    {
+                        MediaPlayer.Pause();
+                        playMusic = false;
+                    }
+                    else
+                    {
+                        MediaPlayer.Resume();
+                        playMusic = true;
+                    }
+                }
             }
 
             //distance Volume
@@ -287,7 +319,7 @@ namespace Assignment3.Scenes
                 fogColour.Y += PhysicsUtil.smoothChange(fogColour.Y, dayFogColour.Y, AMBIENT_RATE);
                 fogColour.Z += PhysicsUtil.smoothChange(fogColour.Z, dayFogColour.Z, AMBIENT_RATE);
 
-                if(dayAudio)
+                if(dayAudio && playMusic)
                 {
                     if (!VolSaved)
                     {
@@ -339,7 +371,7 @@ namespace Assignment3.Scenes
                 fogColour.Y += PhysicsUtil.smoothChange(fogColour.Y, nightFogColour.Y, AMBIENT_RATE);
                 fogColour.Z += PhysicsUtil.smoothChange(fogColour.Z, nightFogColour.Z, AMBIENT_RATE);
 
-                if(!dayAudio)
+                if(!dayAudio && playMusic)
                 {
                     if (!VolSaved)
                     {
