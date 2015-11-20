@@ -47,6 +47,8 @@ namespace Assignment2
         private List<EntityCollide> collisionList = new List<EntityCollide>();
         private List<Brick> bricks = new List<Brick>();
 
+        private SaveUtils save;
+
         /// <summary>
         /// The constructor for the game.
         /// </summary>
@@ -108,6 +110,20 @@ namespace Assignment2
 
             // Load the audio
             audioUtils.loadContent(Content);
+
+            save = SaveUtils.getInstance();
+
+            // Initialize the high score list
+#if XBOX360
+            if (!save.storageRegistered())
+                save.RegisterStorage();
+#endif
+
+            if (!save.CheckHighScoreExists())
+            {
+                List<int> highscores = HighScoreUtils.createInitialHighScores();
+                save.saveHighScores(highscores);
+            }
         }
 
         /// <summary>
@@ -239,6 +255,13 @@ namespace Assignment2
             MediaPlayer.Stop();
 
             hud.gameWin();
+
+            // Update the high scores
+            HighscoreData data = save.loadHighScores();
+            List<int> scores = data.highscores;
+            HighScoreUtils.updateHighScores(scores, hud.getScore());
+
+            save.saveHighScores(scores);
         }
 
         /// <summary>
