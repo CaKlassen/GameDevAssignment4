@@ -60,10 +60,14 @@ namespace Assignment3.Scenes
         private float flashlight = dayFlashlight;
         private float ambientIntensity = dayIntensity;
         private bool day = true;
+
+        //AUDIO
         private bool dayAudio = true;
         private bool VolSaved = false;
         bool fadeOut = true;
         bool fadeIn = false;
+        const float TIMER = 0.5f;
+        float timer = TIMER;
 
         MazeDifficulty difficulty;
         private float[] fogLevels = { 30, 20, 10 };
@@ -80,6 +84,9 @@ namespace Assignment3.Scenes
         {
             HLSLeffect = content.Load<Effect>("Effects/Shader");
             audioUtils.loadContent(content);
+            audioUtils.curVol /= 2;
+            MediaPlayer.Volume = audioUtils.curVol;
+
 
             difficulty = MazeCommunication.getDifficulty();
 
@@ -115,8 +122,15 @@ namespace Assignment3.Scenes
                 prevGP = GamePad.GetState(PlayerIndex.One);
         }
 
+        public float getFogVol()
+        {
+            return audioUtils.curVol / 2;
+        }
+
         public override void update(GameTime gameTime, GamePadState gamepad, KeyboardState keyboard)
         {
+            float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            timer -= elapsedTime;
 
             if (keyboard.IsKeyDown(Keys.Escape))
             {
@@ -178,6 +192,17 @@ namespace Assignment3.Scenes
                 if (keyboard.IsKeyDown(Keys.X) && !prevKB.IsKeyDown(Keys.X))
                 {
                     fogEnabled = !fogEnabled;
+                    
+                    if (fogEnabled)
+                    {
+                        audioUtils.curVol /= 2;
+                        MediaPlayer.Volume = audioUtils.curVol;
+                    }
+                    else
+                    {
+                        audioUtils.curVol *= 2;
+                        MediaPlayer.Volume = audioUtils.curVol;
+                    }
                 }
             }
             else
@@ -233,6 +258,18 @@ namespace Assignment3.Scenes
                 if (gamepad.IsButtonDown(Buttons.RightShoulder) && !prevGP.IsButtonDown(Buttons.RightShoulder))
                 {
                     fogEnabled = !fogEnabled;
+
+                    if (fogEnabled)
+                    {
+                        audioUtils.curVol /= 2;
+                        MediaPlayer.Volume = audioUtils.curVol;
+                    }
+                    else
+                    {
+                        audioUtils.curVol *= 2;
+                        MediaPlayer.Volume = audioUtils.curVol;
+                    }
+                       
                 }
             }
 
@@ -343,6 +380,17 @@ namespace Assignment3.Scenes
                 }
             }
 
+            if(timer < 0)
+            {
+                if (camera.hitWall)
+                {
+                    audioUtils.WallBump.Play();
+                }
+
+                audioUtils.playFootstep();
+                timer = TIMER;
+            }
+            
 
             mazeRunner.update(gameTime, gamepad, keyboard);
             camera.Update(gameTime);
