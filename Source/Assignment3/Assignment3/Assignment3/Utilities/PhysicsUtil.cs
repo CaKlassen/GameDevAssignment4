@@ -89,6 +89,7 @@ namespace Assignment3.Utilities
                                 if (PlayerSphere.Intersects(WallSphere))
                                 {
                                     //collision!
+                                    AudioUtils.getInstance().laugh.Play();
                                     BaseGame.instance.changeScene(SceneType.MENU);
                                 }
                             }

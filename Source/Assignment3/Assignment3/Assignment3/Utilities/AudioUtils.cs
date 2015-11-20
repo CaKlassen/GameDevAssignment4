@@ -19,6 +19,7 @@ namespace Assignment3.Utilities
         public SoundEffect footstep2;
         public SoundEffect footstep3;
         public SoundEffect WallBump;
+        public SoundEffect laugh;
         public float curVol;
 
         /// <summary>
@@ -42,6 +43,7 @@ namespace Assignment3.Utilities
             footstep2 = c.Load<SoundEffect>("Sound/Footstep_Cave2");
             footstep3 = c.Load<SoundEffect>("Sound/Footstep_Cave3");
             WallBump = c.Load<SoundEffect>("Sound/WallBump");
+            laugh = c.Load<SoundEffect>("Sound/Laugh");
             // Load music
             day = c.Load<Song>("Sound/A Ruined Village");
             night = c.Load<Song>("Sound/Cold Sweat");
