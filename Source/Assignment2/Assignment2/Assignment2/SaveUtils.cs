@@ -17,7 +17,7 @@ namespace Assignment2
     }
 
 
-    class SaveUtils
+    public class SaveUtils
     {
         private static SaveUtils instance;
         private StorageDevice storageDevice;

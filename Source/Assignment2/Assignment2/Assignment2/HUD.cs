@@ -31,6 +31,8 @@ namespace Assignment2.Entities
         private bool win = false;
         private bool pause = false;
 
+        private string highScoreList = "";
+
         /// <summary>
         /// This is the constructor for the HUD.
         /// </summary>
@@ -62,6 +64,17 @@ namespace Assignment2.Entities
                         if (MediaPlayer.State == MediaState.Playing)
                         {
                             MediaPlayer.Pause();
+                        }
+
+                        // Load the new high scores
+                        HighscoreData data = SaveUtils.getInstance().loadHighScores();
+                        List<int> scores = data.highscores;
+
+                        highScoreList = "High Scores:\n\n";
+
+                        foreach (int score in scores)
+                        {
+                            highScoreList += score + "\n";
                         }
                     }
                     else
@@ -106,8 +119,14 @@ namespace Assignment2.Entities
 
             if (pause)
             {
-                sb.DrawString(endFont, "PAUSED", new Vector2(Game1.instance.GraphicsDevice.Viewport.Bounds.Width / 2, Game1.instance.GraphicsDevice.Viewport.Bounds.Height / 2),
-                    Color.White, 0, new Vector2(endFont.MeasureString("PAUSED").X / 2, endFont.MeasureString("PAUSED").Y / 2), 1, 0, 0);
+                if (!win)
+                {
+                    sb.DrawString(endFont, "PAUSED", new Vector2(Game1.instance.GraphicsDevice.Viewport.Bounds.Width / 2, Game1.instance.GraphicsDevice.Viewport.Bounds.Height / 2),
+                        Color.White, 0, new Vector2(endFont.MeasureString("PAUSED").X / 2, endFont.MeasureString("PAUSED").Y / 2), 1, 0, 0);
+                }
+
+                // Draw high scores
+                sb.DrawString(smallFont, highScoreList, new Vector2(Game1.instance.GraphicsDevice.Viewport.Bounds.Width - 10 - smallFont.MeasureString(highScoreList).X, 10), Color.White);
             }
 
             sb.End();
@@ -152,6 +171,11 @@ namespace Assignment2.Entities
         public bool getPausedState()
         {
             return pause;
+        }
+
+        public int getScore()
+        {
+            return score;
         }
     }
 }
