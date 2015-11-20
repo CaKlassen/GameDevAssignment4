@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Audio;
+﻿using Assignment3.Scenes;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
 using System;
@@ -14,6 +15,10 @@ namespace Assignment3.Utilities
         private static AudioUtils instance;
         public Song day;
         public Song night;
+        public SoundEffect footstep1;
+        public SoundEffect footstep2;
+        public SoundEffect footstep3;
+        public SoundEffect WallBump;
         public float curVol;
 
         /// <summary>
@@ -33,12 +38,15 @@ namespace Assignment3.Utilities
         public void loadContent(ContentManager c)
         {
             // Load sound effects
-            //sndBounce = c.Load<SoundEffect>("SFX/sndBounce");
-
+            footstep1 = c.Load<SoundEffect>("Sound/Footstep_Cave1");
+            footstep2 = c.Load<SoundEffect>("Sound/Footstep_Cave2");
+            footstep3 = c.Load<SoundEffect>("Sound/Footstep_Cave3");
+            WallBump = c.Load<SoundEffect>("Sound/WallBump");
             // Load music
             day = c.Load<Song>("Sound/A Ruined Village");
             night = c.Load<Song>("Sound/Cold Sweat");
             MediaPlayer.Volume = 1.0f;
+            curVol = MediaPlayer.Volume;
         }
 
         /// <summary>
@@ -76,6 +84,28 @@ namespace Assignment3.Utilities
             }
 
             return fadedComplete;
+        }
+
+        public void playFootstep()
+        {
+            if(MazeScene.instance.camera.moving)
+            {          
+                Random r = new Random();
+
+                switch (r.Next(1, 3))
+                {
+                    case 1:
+                        footstep1.Play();
+                        break;
+                    case 2:
+                        footstep2.Play();
+                        break;
+                    case 3:
+                        footstep3.Play();
+                        break;
+                }
+                
+            }
         }
 
         /// <summary>

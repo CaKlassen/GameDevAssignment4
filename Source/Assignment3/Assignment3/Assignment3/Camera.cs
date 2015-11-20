@@ -28,6 +28,8 @@ namespace Assignment3
         private float AspectRatio;
         private Boolean GhostMode;
         private Matrix projection;
+        public bool moving;
+        public bool hitWall;
 
         //properties
 
@@ -105,6 +107,8 @@ namespace Assignment3
             cameraSpeed = speed;
             Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(FOV), aspectRatio, 0.05f, 1000f);
             walkThroughWalls = false;
+            moving = false;
+            hitWall = false;
 
             this.VPH = VPH;
             this.VPW = VPW;
@@ -161,12 +165,17 @@ namespace Assignment3
                 //test collision w/ preview move here
                 if (!PhysicsUtil.CheckCollision(MazeScene.instance.mazeRunner, MazeScene.instance.collideList))//if not colliding with wall
                 {
+                    hitWall = false;
                     MoveTo(PreviewMove(amount), Rotation);
+                }else
+                {
+                    hitWall = true;
                 }
             }else
             {
                 //else if walking through walls if on; just move
                 MoveTo(PreviewMove(amount), Rotation);
+                //playFootstep
             }
         }
         
@@ -213,9 +222,12 @@ namespace Assignment3
                 {
                     moveVector.Normalize();
                     moveVector *= DeltaTime * cameraSpeed;
-
+                    moving = true;
                     //move camera
                     Move(moveVector);
+                }else
+                {
+                    moving = false;
                 }
 
                 //Mouse Movement
@@ -270,9 +282,12 @@ namespace Assignment3
                 {
                     moveVector.Normalize();
                     moveVector *= DeltaTime * cameraSpeed;
-
+                    moving = true;
                     //move camera
                     Move(moveVector);
+                }else
+                {
+                    moving = false;
                 }
 
                 //Controller camera rotation
