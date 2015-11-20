@@ -152,8 +152,9 @@ namespace Assignment2
                 this.Exit();
 
             // Resetting
-            if (!console.isOpen() && (gamepad.IsButtonDown(Buttons.Start) || keyboard.IsKeyDown(Keys.R)))
+            if (!console.isOpen() && (gamepad.IsButtonDown(Buttons.Y) || keyboard.IsKeyDown(Keys.R)))
             {
+                MediaPlayer.Stop();
                 reset();
             }
             
