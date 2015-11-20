@@ -52,43 +52,6 @@ namespace Assignment3.Utilities
             MediaPlayer.IsRepeating = true;
         }
 
-        /// <summary>
-        /// fades the current track out
-        /// </summary>
-        /// <returns>true when track is faded to 0; false otherwise</returns>
-        public bool fadeTrackOut()
-        {
-            bool fadeComplete = false;
-            MediaPlayer.Volume += PhysicsUtil.smoothChange(MediaPlayer.Volume, 0, 40);
-            float volume = MediaPlayer.Volume;
-            if (MediaPlayer.Volume < 0.2)
-            {
-                MediaPlayer.Volume = 0.0f;
-                fadeComplete = true;
-            }
-                
-
-            return fadeComplete;
-        }
-
-        /// <summary>
-        /// fades the current track in
-        /// </summary>
-        /// <returns>true when track is faded in to initial volume before fadeOut; false otherwise</returns>
-        public bool fadeTrackIn()
-        {
-            bool fadedComplete = false;
-            MediaPlayer.Volume += PhysicsUtil.smoothChange(MediaPlayer.Volume, curVol, 5);
-
-            if(MediaPlayer.Volume > curVol - 0.001)
-            {
-                MediaPlayer.Volume = curVol;
-                fadedComplete = true;
-            }
-
-            return fadedComplete;
-        }
-
         public void playFootstep()
         {
             if(MazeScene.instance.camera.moving)

@@ -321,41 +321,9 @@ namespace Assignment3.Scenes
 
                 if(dayAudio && playMusic)
                 {
-                    if (!VolSaved)
-                    {
-                        audioUtils.curVol = MediaPlayer.Volume;
-                        VolSaved = true;
-                    }
-
-                    if (fadeOut)
-                    {
-                        fadeOut = !audioUtils.fadeTrackOut();
-
-                        if(!fadeOut)
-                        {
-                            MediaPlayer.IsMuted = true;
-                            MediaPlayer.Stop();
-                            fadeIn = true;
-                        }
-                             
-                        float vol = MediaPlayer.Volume;
-                    }
-
-                    if (fadeIn)
-                    {
-                        MediaPlayer.Play(audioUtils.day);
-                        MediaPlayer.IsMuted = false;
-                        fadeIn = !audioUtils.fadeTrackIn();
-                        dayAudio = true;
-                        
-
-                        if(!fadeIn)
-                        {
-                            fadeOut = true;
-                            VolSaved = false;
-                            dayAudio = false;
-                        }
-                    }
+                    MediaPlayer.Stop();
+                    MediaPlayer.Play(audioUtils.day);
+                    dayAudio = false;
                 }
             }
             else
@@ -373,42 +341,9 @@ namespace Assignment3.Scenes
 
                 if(!dayAudio && playMusic)
                 {
-                    if (!VolSaved)
-                    {
-                        audioUtils.curVol = MediaPlayer.Volume;
-                        VolSaved = true;
-                    }
-
-                    if (fadeOut)
-                    {
-                        fadeOut = !audioUtils.fadeTrackOut();
-
-                        if (!fadeOut)
-                        {
-                            MediaPlayer.IsMuted = true;
-                            MediaPlayer.Stop();
-                            fadeIn = true;
-                        }
-
-                        float vol = MediaPlayer.Volume;
-                    }
-
-                    if (fadeIn)
-                    {
-                        MediaPlayer.Play(audioUtils.night);
-                        MediaPlayer.IsMuted = false;
-                        fadeIn = !audioUtils.fadeTrackIn();
-                        float vol = MediaPlayer.Volume;
-                        dayAudio = false;
-                       
-
-                        if (!fadeIn)
-                        {
-                            fadeOut = true;
-                            VolSaved = false;
-                            dayAudio = true;
-                        }
-                    }
+                    MediaPlayer.Stop();
+                    MediaPlayer.Play(audioUtils.night);
+                    dayAudio = true;         
                 }
             }
 
