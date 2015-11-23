@@ -252,18 +252,21 @@ namespace Assignment2
         /// </summary>
         public void gameWin()
         {
-            ball.stop();
+            if (!hud.getGameWin())
+            {
+                ball.stop();
 
-            MediaPlayer.Stop();
+                MediaPlayer.Stop();
 
-            hud.gameWin();
+                hud.gameWin();
 
-            // Update the high scores
-            HighscoreData data = save.loadHighScores();
-            List<int> scores = data.highscores;
-            HighScoreUtils.updateHighScores(scores, hud.getScore());
+                // Update the high scores
+                HighscoreData data = save.loadHighScores();
+                List<int> scores = data.highscores;
+                HighScoreUtils.updateHighScores(scores, hud.getScore());
 
-            save.saveHighScores(scores);
+                save.saveHighScores(scores);
+            }
         }
 
         /// <summary>
@@ -271,9 +274,19 @@ namespace Assignment2
         /// </summary>
         public void gameOver()
         {
-            ball.stop();
+            if (!hud.getGameOver())
+            {
+                ball.stop();
 
-            hud.gameOver();
+                hud.gameOver();
+
+                // Update the high scores
+                HighscoreData data = save.loadHighScores();
+                List<int> scores = data.highscores;
+                HighScoreUtils.updateHighScores(scores, hud.getScore());
+
+                save.saveHighScores(scores);
+            }
         }
 
         /// <summary>
