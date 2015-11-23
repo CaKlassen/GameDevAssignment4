@@ -157,6 +157,16 @@ namespace Assignment2.Entities
             win = true;
         }
 
+        public bool getGameWin()
+        {
+            return win;
+        }
+
+        public bool getGameOver()
+        {
+            return end;
+        }
+
         /// <summary>
         /// This function resets the HUD.
         /// </summary>

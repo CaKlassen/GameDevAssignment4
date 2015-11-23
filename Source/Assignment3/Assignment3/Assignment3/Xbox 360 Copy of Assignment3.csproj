@@ -71,6 +71,7 @@
     <Content Include="Game.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assignment3_TemporaryKey.pfx" />
     <None Include="GameThumbnail.png">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </None>
